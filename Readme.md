@@ -3,26 +3,39 @@
 ## Overview
 We want to create a hardware shop using popular technologies in a friendly team
 (MKdir). Examples are any store selling goods. Current idea is to implement an
-admin panel and user panel. The basic interface of the store was designed in Figma.
+admin panel and user panel. The basic interface of the store was designed in [Figma](https://www.figma.com/file/Re4tXW7aNCWOzed7wI1GKe/dirStore).
+
+### Basic flow
+![Basic flow](./docs/basic_flow.png)
 
 ### The application must have the following functionality from the administrator perspective:
 
 * authorization;
+* authentication;
 * creation of a new product (price, description, category, name, manufacturer, photo);
 * manage existing products/deliverers (read/edit/delete);
 * add new products/deliverers;
 * view sales statistics for the selected category
-  (or popularity of the products for example);
+  or popularity of the products for example (diagrams, table), provide analytics;
+* control the processes of users interaction in application;
+* moderation of registered users.
 
-### The application must have the following functionality from the client:
+### Admin use case 
+![Functionality for ADMIN](./docs/admin_use_case.png)
+
+### The application must have the following functionality from the user:
 
 * authorization;
+* authentication;
 * browse products by category;
-* adding goods to the "Cart";
-* view the basket and edit it;
-* payment for goods;
-* view the history of purchased goods.
-* implement adding the ability to create comments to the product (nice to have).
+* adding goods to the cart;
+* view the cart and edit it;
+* provide payment flow for goods;
+* view the history of purchased goods;
+* implement the ability to add comments to the specific product (nice to have);
+
+### User use case
+![Functionality for USER](./docs/user_use_case.png)
 
 ### Technologies for implementing:
 

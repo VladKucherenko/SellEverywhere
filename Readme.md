@@ -10,7 +10,7 @@ admin panel and user panel. The basic interface of the store was designed in [Fi
 
 ### The application must have the following functionality from the administrator perspective:
 
-* authorization;
+* authorization - jwt;
 * authentication;
 * creation of a new product (price, description, category, name, manufacturer, photo);
 * manage existing products/deliverers (read/edit/delete);
@@ -25,7 +25,7 @@ admin panel and user panel. The basic interface of the store was designed in [Fi
 
 ### The application must have the following functionality from the user:
 
-* authorization;
+* authorization - jwt;
 * authentication;
 * browse products by category;
 * adding goods to the cart;
@@ -39,7 +39,7 @@ admin panel and user panel. The basic interface of the store was designed in [Fi
 
 ### Technologies for implementing:
 
-* Frontend: Next.js, TypeScript, Redux;
+* Frontend: Next.js ssg & ssr, TypeScript, Redux;
 * Database: MySQL / PostgresSQL;
 * Backend: Nest.js, knex / sequelize;
 * Testing: Jest (RTL / Enzyme);

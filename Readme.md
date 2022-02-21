@@ -15,7 +15,7 @@ admin panel and user panel. The basic interface of the store was designed in [Fi
 * creation of a new product (fill price, description, category, category characteristics, name, manufacturer, photo);
 * fill characteristics of the product by chosen category (dynamic characteristics)
 * manage existing products/deliverers (read/edit/delete);
-* promotion ability helps admin to change product price and see history of changes and add product to the list of special propositions
+* control of changes about the goods listed in web application (decrease/increase in price, addition of shares/advertisements, decrease in the quantity of specific goods)
 * add new products/deliverers;
 * view sales statistics for the selected category
   or popularity of the products for example (diagrams, table), provide analytics;
@@ -29,11 +29,14 @@ admin panel and user panel. The basic interface of the store was designed in [Fi
 
 * authorization - jwt;
 * authentication;
-* browse products by category and its characteristics (dynamic characteristics);
+* have a control under profile (update/manage/delete) and ability to autofill by profile info necessary fields of customer/billing/shipping (will works for profile info with default flag) info when user try to make an order
+* browse products by category and its characteristics (dynamic characteristics)/filtering products and their suppliers;
+* viewing available promotional offers that specified by admin (offers will be at the top of products list)
 * adding goods to the cart;
 * view the cart and edit it;
+* record user purchases into the checks;
 * provide payment flow for goods;
-* view the history of purchased goods (records of every purchase will be stored with copying detail info);
+* view the history of purchased goods (records of every purchase will be stored with copying detail info about products/billing/shipping);
 * implement the ability to add comments to the specific product (nice to have);
 
 ### User use case

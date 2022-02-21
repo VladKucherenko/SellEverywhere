@@ -10,28 +10,30 @@ admin panel and user panel. The basic interface of the store was designed in [Fi
 
 ### The application must have the following functionality from the administrator perspective:
 
-* authorization;
+* authorization - jwt;
 * authentication;
-* creation of a new product (price, description, category, name, manufacturer, photo);
+* creation of a new product (fill price, description, category, category characteristics, name, manufacturer, photo);
+* fill characteristics of the product by chosen category (dynamic characteristics)
 * manage existing products/deliverers (read/edit/delete);
+* promotion ability helps admin to change product price and see history of changes and add product to the list of special propositions
 * add new products/deliverers;
 * view sales statistics for the selected category
   or popularity of the products for example (diagrams, table), provide analytics;
 * control the processes of users interaction in application;
 * moderation of registered users.
 
-### Admin use case 
+### Admin use case
 ![Functionality for ADMIN](./docs/admin_use_case.png)
 
 ### The application must have the following functionality from the user:
 
-* authorization;
+* authorization - jwt;
 * authentication;
-* browse products by category;
+* browse products by category and its characteristics (dynamic characteristics);
 * adding goods to the cart;
 * view the cart and edit it;
 * provide payment flow for goods;
-* view the history of purchased goods;
+* view the history of purchased goods (records of every purchase will be stored with copying detail info);
 * implement the ability to add comments to the specific product (nice to have);
 
 ### User use case
@@ -39,11 +41,14 @@ admin panel and user panel. The basic interface of the store was designed in [Fi
 
 ### Technologies for implementing:
 
-* Frontend: Next.js, TypeScript, Redux;
+* Frontend: Next.js ssg & ssr, TypeScript, Redux;
 * Database: MySQL / PostgresSQL;
-* Backend: Nest.js, knex / sequelize;
+* Backend: Nest.js, knex;
 * Testing: Jest (RTL / Enzyme);
 * CI/CD: Versel, linters and tests.
+
+### Technologies for implementing features:
+* for payments: stripe test account
 
 ## Additional instruments for developing:
 

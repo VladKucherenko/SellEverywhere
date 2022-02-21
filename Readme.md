@@ -49,6 +49,7 @@ admin panel and user panel. The basic interface of the store was designed in [Fi
 
 ### Technologies for implementing features:
 * for payments: stripe test account
+* for auth: jwt - using refresh/auth tokens
 
 ## Additional instruments for developing:
 

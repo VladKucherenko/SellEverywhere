@@ -46,7 +46,7 @@ admin panel and user panel. The basic interface of the store was designed in [Fi
 
 * Frontend: Next.js ssg & ssr, TypeScript, Redux;
 * Database: MySQL / PostgresSQL;
-* Backend: Nest.js, knex;
+* Backend: Nest.js, TypeORM;
 * Testing: Jest (RTL / Enzyme);
 * CI/CD: Versel, linters and tests.
 

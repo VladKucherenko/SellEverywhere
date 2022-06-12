@@ -8,9 +8,9 @@ CREATE TABLE IF NOT EXISTS product
 (
     id uuid DEFAULT uuid_generate_v4() NOT NULL,
     name VARCHAR(100) NOT NULL,
-    description VARCHAR(5000),
-    price INT DEFAULT 0 NOT NULL,
-    amount INT DEFAULT 0 NOT NULL,
+    description TEXT,
+    price INTEGER DEFAULT 0 NOT NULL,
+    amount INTEGER DEFAULT 0 NOT NULL,
     created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     UNIQUE(id),
@@ -28,9 +28,9 @@ CREATE TABLE IF NOT EXISTS stock
     id uuid DEFAULT uuid_generate_v4() NOT NULL,
     product_id uuid NOT NULL,
     characteristics JSONB,
-    price INT DEFAULT 0 NOT NULL,
+    price INTEGER DEFAULT 0 NOT NULL,
     price_history JSONB,
-    amount INT DEFAULT 0 NOT NULL,
+    amount INTEGER DEFAULT 0 NOT NULL,
     created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     deleted_date TIMESTAMP,
@@ -48,8 +48,7 @@ create table category
     name VARCHAR(50),
     type VARCHAR(50) NOT NULL,
     description VARCHAR(300),
-    UNIQUE(id),
-    primary key (id)
+    PRIMARY KEY (id)
 );
 -- example of data:
 -- id: 1
@@ -64,7 +63,7 @@ create table characteristic
     id SERIAL NOT NULL,
     type VARCHAR(30),
     description VARCHAR(300),
-    category_id INT NOT NULL,
+    category_id INTEGER NOT NULL,
     characteristic_metadata JSONB,
     UNIQUE(id),
     primary key (id),
@@ -123,7 +122,7 @@ CREATE TABLE customer_role
 CREATE TABLE customer
 (
     id uuid DEFAULT uuid_generate_v4() primary key NOT NULL,
-    customer_role_id INT not null,
+    customer_role_id INTEGER not null,
     username CHARACTER VARYING(50),
     first_name CHARACTER VARYING(35),
     last_name CHARACTER VARYING(35),
@@ -145,9 +144,10 @@ CREATE TABLE checkout
     id uuid DEFAULT uuid_generate_v4() primary key NOT NULL,
     customer_id uuid NOT NULL,
     invoice CHARACTER VARYING(100),
-    tax INT DEFAULT 0 NOT NULL,
-    providers_price INT DEFAULT 0 NOT NULL,
-    delivery_address text,
+    tax INTEGER DEFAULT 0 NOT NULL,
+    providers_price INTEGER DEFAULT 0 NOT NULL,
+    delivery_address TEXT,
+    checkout_status_id INTEGER,
     created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     CONSTRAINT FK_checkout_item_customer
@@ -161,9 +161,6 @@ DROP CONSTRAINT FK_product_image_product;
 ALTER TABLE stock_image
 ADD CONSTRAINT FK_stock_image
   FOREIGN KEY (stock_id) REFERENCES stock(id) ON DELETE CASCADE;
-
-ALTER TABLE checkout
-ADD COLUMN updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL;
 --CHECKOUT END
 
 --CHECKOUT ITEM
@@ -189,9 +186,6 @@ CREATE TABLE checkout_status
 -- id: 1
 -- name: Draft
 -- type: (possible variants) 'DRAFT', 'ACTIVE', 'PENDING','CONFIRMED', 'IN_PROCESS', 'ARRIVED','RETURNED','DECLINED', 'FULFILLED'
-
-ALTER TABLE checkout
-ADD COLUMN checkout_status_id INT;
 
 ALTER TABLE checkout
 ADD CONSTRAINT FK_checkout_status
@@ -282,7 +276,7 @@ CREATE TABLE IF NOT EXISTS image
     name VARCHAR(100) NOT NULL,
     primary_image BOOLEAN DEFAULT FALSE NOT NULL,
     endpoint VARCHAR(100) DEFAULT 'http://localhost:3001/uploads/' NOT NULL,
-    image_order INT DEFAULT 0 NOT NULL,
+    image_order INTEGER DEFAULT 0 NOT NULL,
     created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     unique(id)

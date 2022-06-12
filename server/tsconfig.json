@@ -37,7 +37,7 @@
       ],
       "test/*": [
         "./test/*"
-      ],
+      ]
     },
     "references": [
       {
@@ -47,6 +47,7 @@
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,
+    "strict": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,

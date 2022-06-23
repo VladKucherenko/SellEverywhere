@@ -1,54 +1,51 @@
 --PostgresSQL script
 
---for uuid_generated_v4
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
 --PRODUCT
 CREATE TABLE IF NOT EXISTS product
 (
-    id uuid DEFAULT uuid_generate_v4() NOT NULL,
-    name VARCHAR(100) NOT NULL,
-    description TEXT,
+    id SERIAL PRIMARY KEY,
+    product_name TEXT CHECK(char_length(product_name) <= 100) NOT NULL,
+    description TEXT CHECK(char_length(description) <= 2000),
     price INTEGER DEFAULT 0 NOT NULL,
     amount INTEGER DEFAULT 0 NOT NULL,
-    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    UNIQUE(id),
-    primary key (id)
+    created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
 alter table product
 add CONSTRAINT FK_product_category
-     FOREIGN KEY (category_id) REFERENCES category(id) ON DELETE SET null;
+     FOREIGN KEY (category_id) REFERENCES category(id);
+
+CREATE INDEX FK_product_category ON product (category_id);
+
 --PRODUCT END
 
 --STOCK
 CREATE TABLE IF NOT EXISTS stock
 (
-    id uuid DEFAULT uuid_generate_v4() NOT NULL,
-    product_id uuid NOT NULL,
-    characteristics JSONB,
+    id SERIAL PRIMARY KEY,
+    product_id INTEGER NOT NULL,
+    characteristics JSONB CHECK(jsonb_array_length(characteristics) <= 1000),
     price INTEGER DEFAULT 0 NOT NULL,
-    price_history JSONB,
+    price_history JSONB CHECK(jsonb_array_length(price_history) <= 1000),
     amount INTEGER DEFAULT 0 NOT NULL,
-    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    deleted_date TIMESTAMP,
+    created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    deleted_timestamp TIMESTAMP,
     CONSTRAINT FK_stock_product
-      FOREIGN KEY (product_id) REFERENCES product(id),
-    UNIQUE(id),
-    PRIMARY KEY (id)
+      FOREIGN KEY (product_id) REFERENCES product(id)
 );
+
+CREATE INDEX FK_stock_product ON stock (product_id);
 --STOCK END
 
 --CATEGORY
 create table category
 (
-    id SERIAL NOT NULL,
-    name VARCHAR(50),
-    type VARCHAR(50) NOT NULL,
-    description VARCHAR(300),
-    PRIMARY KEY (id)
+    id SERIAL PRIMARY KEY,
+    category_name TEXT CHECK(char_length(category_name) <= 50),
+    category_type TEXT CHECK(char_length(category_type) <= 50) NOT NULL,
+    description TEXT CHECK(char_length(description) <= 300)
 );
 -- example of data:
 -- id: 1
@@ -60,34 +57,33 @@ create table category
 --CHARACTERISTIC
 create table characteristic
 (
-    id SERIAL NOT NULL,
-    type VARCHAR(30),
-    description VARCHAR(300),
+    id SERIAL PRIMARY KEY,
+    type TEXT CHECK(char_length(type) <= 30),
+    description TEXT CHECK(char_length(description) <= 300),
     category_id INTEGER NOT NULL,
-    characteristic_metadata JSONB,
-    UNIQUE(id),
-    primary key (id),
+    characteristic_metadata JSONB CHECK(jsonb_array_length(characteristic_metadata) <= 1000),
     CONSTRAINT FK_characteristic_category
-        FOREIGN KEY (category_id) REFERENCES category(id) ON DELETE SET null
+        FOREIGN KEY (category_id) REFERENCES category(id)
 );
 
+CREATE INDEX FK_characteristic_category ON characteristic (category_id);
+
 -- example of data:
--- type: 'SELECT', 'INPUT', 'NUMBER', 'TEXT_FIELD'
+-- type: 'SELECT', 'INPUT', 'NUMBER'
 
 --CHARACTERISTIC END
 
 --DELIVERER
 CREATE TABLE IF NOT EXISTS deliverer
 (
-    id uuid DEFAULT uuid_generate_v4() NOT NULL,
-    name VARCHAR(30) NOT NULL,
-    delivery_price INT,
-    description VARCHAR(100),
-    phone VARCHAR(50) NOT NULL,
-    address VARCHAR(50),
-    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    UNIQUE(id),
+    id SERIAL,
+    deliverer_name TEXT CHECK(char_length(deliverer_name) <= 30) NOT NULL,
+    delivery_price INTEGER,
+    description TEXT CHECK(char_length(description) <= 100),
+    phone TEXT CHECK(char_length(phone) <= 50) NOT NULL,
+    address TEXT CHECK(char_length(address) <= 50),
+    created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     primary key (id)
 );
 --DELIVERER END
@@ -95,23 +91,26 @@ CREATE TABLE IF NOT EXISTS deliverer
 --PROVIDER
 CREATE TABLE provider
 (
-    id uuid DEFAULT uuid_generate_v4() primary key NOT NULL,
-    product_id uuid,
-    deliverer_id uuid,
+    id SERIAL primary key,
+    product_id INTEGER NOT NULL,
+    deliverer_id INTEGER NOT NULL,
     CONSTRAINT FK_provider_product
-      FOREIGN KEY(product_id) REFERENCES product(id) ON DELETE SET null,
+      FOREIGN KEY(product_id) REFERENCES product(id) ON DELETE CASCADE,
     CONSTRAINT FK_provider_deliverer
-      FOREIGN KEY(deliverer_id) REFERENCES deliverer(id) ON DELETE SET null,
-    UNIQUE(id)
+      FOREIGN KEY(deliverer_id) REFERENCES deliverer(id) ON DELETE CASCADE
 );
+
+CREATE INDEX FK_provider_product ON provider (product_id);
+CREATE INDEX FK_provider_deliverer ON provider (deliverer_id);
+
 --PROVIDER END
 
 --CUSTOMER
 CREATE TABLE customer_role
 (
     id SERIAL PRIMARY KEY,
-    name CHARACTER VARYING(50),
-    type CHARACTER VARYING(50)
+    customer_role_name TEXT CHECK(char_length(customer_role_name) <= 100),
+    customer_role_type TEXT CHECK(char_length(customer_role_type) <= 100)
 );
 
 -- example of data:
@@ -121,65 +120,70 @@ CREATE TABLE customer_role
 
 CREATE TABLE customer
 (
-    id uuid DEFAULT uuid_generate_v4() primary key NOT NULL,
+    id SERIAL primary key,
     customer_role_id INTEGER not null,
-    username CHARACTER VARYING(50),
-    first_name CHARACTER VARYING(35),
-    last_name CHARACTER VARYING(35),
-    email CHARACTER VARYING(60) not null,
-    password CHARACTER VARYING(254),
-    phone CHARACTER VARYING(50),
-    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    username TEXT CHECK(char_length(username) <= 50),
+    first_name TEXT CHECK(char_length(first_name) <= 35),
+    last_name TEXT CHECK(char_length(last_name) <= 35),
+    email TEXT CHECK(char_length(email) <= 60) NOT NULL,
+    password TEXT CHECK(char_length(password) <= 254),
+    phone TEXT CHECK(char_length(phone) <= 50),
+    created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     CONSTRAINT FK_customer_role
-        FOREIGN KEY (customer_role_id) REFERENCES customer_role(id),
-    UNIQUE(email),
-    UNIQUE(id)
+        FOREIGN KEY (customer_role_id) REFERENCES customer_role(id) ON DELETE CASCADE
 );
+
+CREATE INDEX FK_customer_role ON customer (customer_role_id);
+
 --CUSTOMER END
 
 --CHECKOUT
 CREATE TABLE checkout
 (
-    id uuid DEFAULT uuid_generate_v4() primary key NOT NULL,
-    customer_id uuid NOT NULL,
-    invoice CHARACTER VARYING(100),
+    id SERIAL primary key,
+    customer_id INTEGER NOT NULL,
+    invoice TEXT CHECK(char_length(invoice) <= 100),
     tax INTEGER DEFAULT 0 NOT NULL,
     providers_price INTEGER DEFAULT 0 NOT NULL,
-    delivery_address TEXT,
-    checkout_status_id INTEGER,
-    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    delivery_address TEXT CHECK(char_length(delivery_address) <= 2000),
+    checkout_status_id INTEGER NOT NULL,
+    created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     CONSTRAINT FK_checkout_item_customer
-    FOREIGN KEY (customer_id) REFERENCES customer(id) ON DELETE SET NULL,
-    UNIQUE(id)
+    FOREIGN KEY (customer_id) REFERENCES customer(id) ON DELETE CASCADE
 );
 
-ALTER TABLE stock_image
-DROP CONSTRAINT FK_product_image_product;
+CREATE INDEX FK_checkout_item_customer ON checkout (customer_id);
 
 ALTER TABLE stock_image
 ADD CONSTRAINT FK_stock_image
   FOREIGN KEY (stock_id) REFERENCES stock(id) ON DELETE CASCADE;
+
+CREATE INDEX FK_stock_image ON stock_image (stock_id);
+
 --CHECKOUT END
 
 --CHECKOUT ITEM
 CREATE TABLE IF NOT EXISTS checkout_item
 (
-    id uuid DEFAULT uuid_generate_v4() primary key NOT NULL,
-    provider_id uuid,
-    checkout_id uuid,
+    id SERIAL primary key,
+    provider_id INTEGER NOT NULL,
+    checkout_id INTEGER NOT NULL,
     CONSTRAINT FK_checkout_item_provider
-     FOREIGN KEY (provider_id) REFERENCES provider(id) ON DELETE SET NULL,
+     FOREIGN KEY (provider_id) REFERENCES provider(id) ON DELETE CASCADE,
     CONSTRAINT FK_checkout_item_checkout
-     FOREIGN KEY (checkout_id) REFERENCES checkout(id) ON DELETE SET NULL
+     FOREIGN KEY (checkout_id) REFERENCES checkout(id) ON DELETE CASCADE
 );
+
+CREATE INDEX FK_checkout_item_provider ON checkout_item (provider_id);
+CREATE INDEX FK_checkout_item_checkout ON checkout_item (checkout_id);
 
 CREATE TABLE checkout_status
 (
     id SERIAL PRIMARY KEY,
-    name CHARACTER VARYING(50),
-    type CHARACTER VARYING(50)
+    checkout_status_name TEXT CHECK(char_length(checkout_status_name) <= 50),
+    checkout_status_type TEXT CHECK(char_length(checkout_status_type) <= 50)
 );
 
 -- example of data:
@@ -189,110 +193,120 @@ CREATE TABLE checkout_status
 
 ALTER TABLE checkout
 ADD CONSTRAINT FK_checkout_status
-     FOREIGN KEY (checkout_status_id) REFERENCES checkout_status(id);
+     FOREIGN KEY (checkout_status_id) REFERENCES checkout_status(id) ON DELETE CASCADE;
+
+CREATE INDEX FK_checkout_status ON checkout (checkout_status_id);
+
 --CHECKOUT ITEM END
 
 --BILLING INFO
 CREATE TABLE IF NOT EXISTS Billing_Info
 (
-    id uuid DEFAULT uuid_generate_v4() primary key NOT NULL,
-    card_name VARCHAR(40),
-    card_number VARCHAR(20),
-    expiry_date VARCHAR(50),
-    cvv VARCHAR(3),
-    checkout_id uuid,
-    email_address VARCHAR(50),
-    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    id SERIAL primary key,
+    card_name TEXT CHECK(char_length(card_name) <= 40),
+    card_number TEXT CHECK(char_length(card_number) <= 20),
+    expiry_date TEXT CHECK(char_length(expiry_date) <= 50),
+    cvv TEXT CHECK(char_length(cvv) <= 3),
+    checkout_id INTEGER NOT NULL,
+    email_address TEXT CHECK(char_length(email_address) <= 50),
+    created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     constraint FK_billing_info_checkout
-     FOREIGN KEY (checkout_id) REFERENCES checkout(id) ON DELETE cascade,
-    unique(id)
+     FOREIGN KEY (checkout_id) REFERENCES checkout(id) ON DELETE cascade
 );
+
+CREATE INDEX FK_billing_info_checkout ON Billing_Info (checkout_id);
+
 --BILLING INFO END
 
 --AUTH
 CREATE TABLE IF NOT EXISTS Billing_Info_Customer
 (
-    id uuid DEFAULT uuid_generate_v4() primary key NOT NULL,
-    card_name VARCHAR(40),
-    card_number VARCHAR(20),
-    expiry_date VARCHAR(50),
-    cvv VARCHAR(3),
-    customer_id uuid,
-    email_address VARCHAR(50),
-    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    id SERIAL primary key,
+    card_name TEXT CHECK(char_length(card_name) <= 40),
+    card_number TEXT CHECK(char_length(card_number) <= 20),
+    expiry_date TEXT CHECK(char_length(expiry_date) <= 50),
+    cvv TEXT CHECK(char_length(cvv) <= 3),
+    customer_id INTEGER NOT NULL,
+    email_address TEXT CHECK(char_length(email_address) <= 50),
+    created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     CONSTRAINT FK_billing_info_customer
-      FOREIGN KEY (customer_id) REFERENCES customer(id) ON DELETE cascade,
-    unique(id)
+      FOREIGN KEY (customer_id) REFERENCES customer(id) ON DELETE cascade
 );
+
+CREATE INDEX FK_billing_info_customer ON Billing_Info_Customer (customer_id);
 
 CREATE TABLE IF NOT EXISTS Shipping_Info_Customer
 (
-    id uuid DEFAULT uuid_generate_v4() NOT NULL,
+    id SERIAL PRIMARY KEY,
     by_default BOOLEAN DEFAULT FALSE NOT NULL,
-    full_name VARCHAR(60),
-    country VARCHAR(40),
-    line1 VARCHAR(100),
-    line2 VARCHAR(100),
-    territory_type VARCHAR(70),
-    city VARCHAR(50),
-    post_code VARCHAR(10),
-    phone VARCHAR(20),
-    email_address VARCHAR(50),
-    customer_id uuid NOT NULL,
-    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    full_name TEXT CHECK(char_length(full_name) <= 60),
+    country TEXT CHECK(char_length(country) <= 40),
+    line1 TEXT CHECK(char_length(line1) <= 100),
+    line2 TEXT CHECK(char_length(line2) <= 100),
+    territory_type TEXT CHECK(char_length(territory_type) <= 70),
+    city TEXT CHECK(char_length(city) <= 50),
+    post_code TEXT CHECK(char_length(post_code) <= 10),
+    phone TEXT CHECK(char_length(phone) <= 20),
+    email_address TEXT CHECK(char_length(email_address) <= 100),
+    customer_id INTEGER NOT NULL,
+    created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     CONSTRAINT FK_shipping_info_customer
-      FOREIGN KEY (customer_id) REFERENCES customer(id) ON DELETE CASCADE,
-    unique(id)
+      FOREIGN KEY (customer_id) REFERENCES customer(id) ON DELETE CASCADE
 );
+
+CREATE INDEX FK_shipping_info_customer ON Shipping_Info_Customer (customer_id);
 
 CREATE TABLE IF NOT EXISTS shipping_info
 (
-    id uuid DEFAULT uuid_generate_v4() NOT NULL,
+    id SERIAL PRIMARY KEY,
     by_default BOOLEAN DEFAULT FALSE NOT NULL,
-    full_name VARCHAR(60),
-    country VARCHAR(40),
-    line1 VARCHAR(100),
-    line2 VARCHAR(100),
-    territory_type VARCHAR(70),
-    city VARCHAR(50),
-    post_code VARCHAR(10),
-    phone VARCHAR(20),
-    email_address VARCHAR(50),
-    checkout_id uuid NOT NULL,
-    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    full_name TEXT CHECK(char_length(full_name) <= 60),
+    country TEXT CHECK(char_length(country) <= 40),
+    line1 TEXT CHECK(char_length(line1) <= 100),
+    line2 TEXT CHECK(char_length(line2) <= 100),
+    territory_type TEXT CHECK(char_length(territory_type) <= 70),
+    city TEXT CHECK(char_length(city) <= 50),
+    post_code TEXT CHECK(char_length(post_code) <= 10),
+    phone TEXT CHECK(char_length(phone) <= 20),
+    email_address TEXT CHECK(char_length(email_address) <= 100),
+    checkout_id INTEGER NOT NULL,
+    created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     CONSTRAINT FK_shipping_info_checkout
-      FOREIGN KEY (checkout_id) REFERENCES checkout(id) ON DELETE CASCADE,
-    unique(id)
+      FOREIGN KEY (checkout_id) REFERENCES checkout(id) ON DELETE CASCADE
 );
+
+CREATE INDEX FK_shipping_info_checkout ON shipping_info (checkout_id);
 
 --IMAGE
 CREATE TABLE IF NOT EXISTS image
 (
-    id uuid DEFAULT uuid_generate_v4() primary key NOT NULL,
-    name VARCHAR(100) NOT NULL,
+    id SERIAL primary key,
+    image_name TEXT CHECK(char_length(image_name) <= 100) NOT NULL,
     primary_image BOOLEAN DEFAULT FALSE NOT NULL,
-    endpoint VARCHAR(100) DEFAULT 'http://localhost:3001/uploads/' NOT NULL,
+    endpoint TEXT CHECK(char_length(endpoint) <= 100) DEFAULT 'http://localhost:3001/uploads/' NOT NULL,
     image_order INTEGER DEFAULT 0 NOT NULL,
-    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    unique(id)
+    created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 --IMAGE END
 
 CREATE TABLE IF NOT EXISTS stock_image
 (
-    id uuid DEFAULT uuid_generate_v4() primary key NOT NULL,
+    id SERIAL primary key,
     order_num INTEGER NOT NULL,
-    stock_id uuid NOT NULL,
-    image_id uuid NOT NULL,
-    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    stock_id INTEGER NOT NULL,
+    image_id INTEGER NOT NULL,
+    created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     CONSTRAINT FK_product_image_product
       FOREIGN KEY (stock_id) REFERENCES stock(id) ON DELETE CASCADE,
     CONSTRAINT FK_product_image_image
       FOREIGN KEY (image_id) REFERENCES image(id) ON DELETE cascade
 );
+
+CREATE INDEX FK_product_image_product ON stock_image (stock_id);
+CREATE INDEX FK_product_image_image ON stock_image (image_id);

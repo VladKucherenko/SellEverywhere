@@ -287,7 +287,7 @@ CREATE TABLE IF NOT EXISTS image
     id SERIAL primary key,
     image_name TEXT CHECK(char_length(image_name) <= 100) NOT NULL,
     primary_image BOOLEAN DEFAULT FALSE NOT NULL,
-    endpoint TEXT CHECK(char_length(endpoint) <= 100) DEFAULT 'http://localhost:3001/uploads/' NOT NULL,
+    endpoint TEXT CHECK(char_length(endpoint) <= 100) NOT NULL,
     image_order INTEGER DEFAULT 0 NOT NULL,
     created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL

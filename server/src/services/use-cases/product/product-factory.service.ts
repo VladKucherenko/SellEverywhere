@@ -24,8 +24,8 @@ export class ProductFactoryService {
     productObject.description = productEntity.description;
     productObject.priceNum = productEntity.price;
     productObject.amount = productEntity.amount;
-    productObject.createdAt = productEntity.created_date;
-    productObject.updatedAt = productEntity.updated_date;
+    productObject.createdAt = productEntity.created_timestamp;
+    productObject.updatedAt = productEntity.updated_timestamp;
 
     return productObject;
   }

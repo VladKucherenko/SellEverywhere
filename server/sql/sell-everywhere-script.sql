@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS stock
     amount INTEGER DEFAULT 0 CHECK(amount>=0) NOT NULL,
     created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    deleted_timestamp TIMESTAMP,
+    deleted_timestamp TIMESTAMP DEFAULT NULL,
     CONSTRAINT FK_stock_product
       FOREIGN KEY (product_id) REFERENCES product(id)
 );

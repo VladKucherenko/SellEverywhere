@@ -18,6 +18,15 @@ add CONSTRAINT FK_product_category
 
 CREATE INDEX FK_product_category ON product (category_id);
 
+CREATE OR REPLACE FUNCTION update_product_timestamp() 
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_timestamp = now();
+    RETURN NEW; 
+END;
+$$ language 'plpgsql';
+
+CREATE TRIGGER before_update_on_product BEFORE UPDATE ON product FOR EACH ROW EXECUTE PROCEDURE  update_product_timestamp();
 --PRODUCT END
 
 --STOCK

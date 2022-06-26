@@ -12,7 +12,7 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T> {
     return this.repository.find();
   }
 
-  get(id: string): Promise<T> {
+  get(id: number): Promise<T> {
     return this.repository.findOne(id);
   }
 
@@ -20,12 +20,12 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T> {
     return this.repository.save(item as DeepPartial<T>);
   }
 
-  async update(id: string, item: DeepPartial<T>) {
+  async update(id: number, item: DeepPartial<T>) {
     const foundedItem = await this.repository.findOne(id);
     return this.repository.save({ ...item, ...foundedItem });
   }
 
-  async deleteById(id: string): Promise<T> {
+  async deleteById(id: number): Promise<T> {
     const deletedItem = await this.repository.findOne(id);
     await this.repository.delete(id);
     return deletedItem;

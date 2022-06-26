@@ -27,5 +27,20 @@ services:
     networks:
       sell-everywhere:
 
+  sell-client:
+    restart: 'on-failure'
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+#      target: development
+    command: npm run dev
+    ports:
+      - "3005:3005"
+    volumes:
+      - ./client:/usr/app/client
+      - /usr/app/client/node_modules
+    networks:
+      sell-everywhere:
+
 networks:
   sell-everywhere:

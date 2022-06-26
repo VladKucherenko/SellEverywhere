@@ -3,8 +3,8 @@ import { BaseEntity } from './base.entity';
 
 @Entity()
 export class ProductEntity extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn('int')
+  id: number;
 
   @Column({ type: 'varchar', length: 100 })
   name: string;
@@ -12,7 +12,7 @@ export class ProductEntity extends BaseEntity {
   @Column({ type: 'varchar', length: 5000 })
   description: string;
 
-  @Column({ type: 'decimal', precision: 7, scale: 2, default: 0 })
+  @Column({ type: 'numeric', precision: 7, scale: 2, default: 0 })
   price: number;
 
   @Column({ type: 'int', default: 0 })

@@ -1,0 +1,31 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+      PGDATA: /data/postgres
+    networks:
+      sell-everywhere:
+
+  sell-server:
+    restart: 'on-failure'
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+#      target: development
+    command: npm run start:dev
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./server:/usr/app/server
+      - /usr/app/server/node_modules
+    networks:
+      sell-everywhere:
+
+networks:
+  sell-everywhere:

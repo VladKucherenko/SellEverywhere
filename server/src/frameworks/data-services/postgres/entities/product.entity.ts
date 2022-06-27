@@ -3,7 +3,7 @@ import { BaseEntity } from './base.entity';
 
 @Entity()
 export class ProductEntity extends BaseEntity {
-  @PrimaryGeneratedColumn('int')
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ type: 'varchar', length: 100 })

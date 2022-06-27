@@ -1,13 +1,9 @@
 import { IBaseEntity } from '../base.entity';
 
 export class IProductEntity extends IBaseEntity {
-  id: string;
-
+  id: number;
   name: string;
-
-  description: string | null;
-
+  description: string;
   price: number;
-
   amount: number;
 }

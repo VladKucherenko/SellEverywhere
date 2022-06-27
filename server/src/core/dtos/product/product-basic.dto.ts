@@ -1,5 +1,5 @@
 export class ProductBasicDto {
-  id?: string;
+  id?: number;
   name: string;
   description: string;
   priceNum: number;

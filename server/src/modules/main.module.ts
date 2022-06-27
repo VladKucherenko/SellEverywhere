@@ -4,6 +4,7 @@ import { DataServicesModule } from '../services/data-services/data-services/data
 import { AppModule } from './app.module';
 import { appConfig } from '../../configs';
 import { ProductModule } from './product.module';
+import { CustomerModule } from './customer.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { ProductModule } from './product.module';
     }),
     DataServicesModule,
     ProductModule,
+    CustomerModule,
     AppModule,
   ],
   controllers: [],

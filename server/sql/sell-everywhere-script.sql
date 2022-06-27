@@ -6,8 +6,8 @@ CREATE TABLE IF NOT EXISTS product
     id SERIAL PRIMARY KEY,
     product_name TEXT CHECK(char_length(product_name) <= 100) NOT NULL,
     description TEXT CHECK(char_length(description) <= 2000),
-    price INTEGER DEFAULT 0 NOT NULL,
-    amount INTEGER DEFAULT 0 NOT NULL,
+    price  SERIAL DEFAULT 0 NOT NULL,
+    amount SERIAL DEFAULT 0 NOT NULL,
     created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
@@ -18,6 +18,15 @@ add CONSTRAINT FK_product_category
 
 CREATE INDEX FK_product_category ON product (category_id);
 
+CREATE OR REPLACE FUNCTION update_product_timestamp() 
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_timestamp = now();
+    RETURN NEW; 
+END;
+$$ language 'plpgsql';
+
+CREATE TRIGGER before_update_on_product BEFORE UPDATE ON product FOR EACH ROW EXECUTE PROCEDURE  update_product_timestamp();
 --PRODUCT END
 
 --STOCK
@@ -26,9 +35,9 @@ CREATE TABLE IF NOT EXISTS stock
     id SERIAL PRIMARY KEY,
     product_id INTEGER NOT NULL,
     characteristics JSONB CHECK(jsonb_array_length(characteristics) <= 1000),
-    price INTEGER DEFAULT 0 NOT NULL,
+    price SERIAL DEFAULT 0 NOT NULL,
     price_history JSONB CHECK(jsonb_array_length(price_history) <= 1000),
-    amount INTEGER DEFAULT 0 NOT NULL,
+    amount SERIAL DEFAULT 0 NOT NULL,
     created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     deleted_timestamp TIMESTAMP,
@@ -78,7 +87,7 @@ CREATE TABLE IF NOT EXISTS deliverer
 (
     id SERIAL,
     deliverer_name TEXT CHECK(char_length(deliverer_name) <= 30) NOT NULL,
-    delivery_price INTEGER,
+    delivery_price SERIAL NOT NULL,
     description TEXT CHECK(char_length(description) <= 100),
     phone TEXT CHECK(char_length(phone) <= 50) NOT NULL,
     address TEXT CHECK(char_length(address) <= 50),
@@ -145,7 +154,7 @@ CREATE TABLE checkout
     customer_id INTEGER NOT NULL,
     invoice TEXT CHECK(char_length(invoice) <= 100),
     tax INTEGER DEFAULT 0 NOT NULL,
-    providers_price INTEGER DEFAULT 0 NOT NULL,
+    providers_price SERIAL NOT NULL,
     delivery_address TEXT CHECK(char_length(delivery_address) <= 2000),
     checkout_status_id INTEGER NOT NULL,
     created_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,

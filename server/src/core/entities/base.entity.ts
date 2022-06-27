@@ -1,5 +1,4 @@
 export class IBaseEntity {
-  created_date: Date;
-
-  updated_date: Date;
+  created_timestamp: Date;
+  updated_timestamp: Date;
 }

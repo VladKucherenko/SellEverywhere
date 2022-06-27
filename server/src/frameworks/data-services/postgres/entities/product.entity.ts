@@ -7,7 +7,7 @@ export class ProductEntity extends BaseEntity {
   id: number;
 
   @Column({ type: 'varchar', length: 100 })
-  name: string;
+  product_name: string;
 
   @Column({ type: 'varchar', length: 5000 })
   description: string;

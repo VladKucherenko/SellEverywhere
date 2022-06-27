@@ -5,10 +5,11 @@ import { PostgresDataServices } from './postgres-data-services.service';
 import { ProductEntity } from './entities/product.entity';
 import { IDataServices } from '../../../core/abstracts/data-services.abstract';
 import { ormConfig } from '../../../../configs';
-console.log('config', ormConfig)
+import { CustomerEntity } from "./entities/customer.entity";
+
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ProductEntity]),
+    TypeOrmModule.forFeature([ProductEntity, CustomerEntity]),
     TypeOrmModule.forRoot(ormConfig),
   ],
   providers: [

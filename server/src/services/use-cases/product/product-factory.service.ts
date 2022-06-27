@@ -7,7 +7,7 @@ import { ProductBasicDto } from '../../../core/dtos/product/product-basic.dto';
 export class ProductFactoryService {
   createNewEntity(productCreateDto: ProductCreateDto): IProductEntity {
     const productEntity = new IProductEntity();
-    productEntity.name = productCreateDto.name;
+    productEntity.product_name = productCreateDto.name;
     productCreateDto.description &&
       (productEntity.description = productCreateDto.description);
     productCreateDto.priceNum &&
@@ -20,7 +20,7 @@ export class ProductFactoryService {
   transformToObject(productEntity: IProductEntity): ProductBasicDto {
     const productObject = new ProductBasicDto();
     productObject.id = productEntity.id;
-    productObject.name = productEntity.name;
+    productObject.name = productEntity.product_name;
     productObject.description = productEntity.description;
     productObject.priceNum = productEntity.price;
     productObject.amount = productEntity.amount;

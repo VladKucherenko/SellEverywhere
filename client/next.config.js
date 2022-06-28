@@ -14,8 +14,8 @@ const nextConfig = {
     prependData: `
       @use "sass:math";
 
-      @import "@styles/utils/variables";
-      @import "@styles/utils/mixins";
+      @import "./app/styles/utils/variables";
+      @import "./app/styles/utils/mixins";
       `,
   },
 };

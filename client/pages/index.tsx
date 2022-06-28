@@ -36,13 +36,29 @@ const initialData = [
   },
 ];
 
-const ProductCard = ({ item }) => (
-  <div className={styles.card}>
-    <h2>{item?.name}</h2>
-    <p>{item?.description}</p>
-    <p>{item?.priceNum}</p>
-  </div>
-);
+interface ProductCard {
+  id: number, 
+  name: string, 
+  description: string, 
+  priceNum: string,
+  amount: string
+}
+
+type Props = {
+  item?: ProductCard
+}
+
+const ProductCard = ({item}: Props) => {
+  // const {item: ProductCard} = props;
+
+  return (
+    <div className={styles.card}>
+      <h2>{item?.name}</h2>
+      <p>{item?.description}</p>
+      <p>{item?.priceNum}</p>
+    </div>
+  );
+};
 
 const Home: NextPage = () => {
   const [res, setRes] = useState(initialData);

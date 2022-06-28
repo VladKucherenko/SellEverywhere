@@ -5,6 +5,9 @@ We want to create a hardware shop using popular technologies in a friendly team
 (MKdir). Examples are any store selling goods. Current idea is to implement an
 admin panel and user panel. The basic interface of the store was designed in [Figma](https://www.figma.com/file/Re4tXW7aNCWOzed7wI1GKe/dirStore).
 
+* [Back-end](https://sell-everywhere.vercel.app/sell-server) with versioning header `'Accept': 'application/json;v=1'`
+* [Front-end](https://sell-everywhere-front.vercel.app/)
+
 ### Basic flow
 ![Basic flow](./docs/basic_flow.png)
 

@@ -9,7 +9,7 @@ import {
 import { ProductServicesService } from '../../services/use-cases/product/product-services.service';
 import {ProductCreateDto} from "../../core/dtos/product/product-create.dto";
 
-@Controller('product')
+@Controller('products')
 export class ProductController {
   constructor(private readonly productServices: ProductServicesService) {}
 

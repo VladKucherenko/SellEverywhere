@@ -1,7 +1,7 @@
 import { DeepPartial } from 'typeorm';
 
 export abstract class IGenericRepository<T> {
-  abstract getAll(): Promise<T[]>;
+  abstract getAll(option?: any): Promise<T[]>;
 
   abstract get(id: number): Promise<T>;
 

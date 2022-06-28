@@ -1,5 +1,5 @@
 import { IGenericRepository } from '../../../../core/abstracts/repository/generic-repository-services.abstract';
-import { DeepPartial, Repository } from 'typeorm';
+import {DeepPartial, FindManyOptions, Repository} from 'typeorm';
 
 export class PostgresGenericRepository<T> implements IGenericRepository<T> {
   repository: Repository<T>;
@@ -8,8 +8,8 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T> {
     this.repository = repository;
   }
 
-  getAll(): Promise<T[]> {
-    return this.repository.find();
+  getAll(options: FindManyOptions = {}): Promise<T[]> {
+    return this.repository.find(options);
   }
 
   get(id: number): Promise<T> {

@@ -1,21 +1,58 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
 import { useEffect, useState } from "react";
+
 import { httpClient } from "../rest-services/axios/axios-instance";
+import styles from "../styles/Home.module.css";
+
+const initialData = [
+  {
+    id: 1,
+    name: "Iphone 12",
+    description: "Find in-depth information about Iphone features and price.",
+    priceNum: "1000$",
+    amount: "3",
+  },
+  {
+    id: 2,
+    name: "Iphone 13",
+    description: "Find in-depth information about Iphone features and price.",
+    priceNum: "1000$",
+    amount: "3",
+  },
+  {
+    id: 3,
+    name: "Iphone 14",
+    description: "Find in-depth information about Iphone features and price.",
+    priceNum: "1000$",
+    amount: "3",
+  },
+  {
+    id: 4,
+    name: "Iphone 15",
+    description: "Find in-depth information about Iphone features and price.",
+    priceNum: "1000$",
+    amount: "3",
+  },
+];
+
+const ProductCard = ({ item }) => (
+  <div className={styles.card}>
+    <h2>{item?.name}</h2>
+    <p>{item?.description}</p>
+    <p>{item?.priceNum}</p>
+  </div>
+);
 
 const Home: NextPage = () => {
-  const [res, setRes] = useState<
-    { name: string; description: string; price: number }[]
-  >([]);
+  const [res, setRes] = useState(initialData);
 
   useEffect(() => {
     getterInfo();
   }, []);
 
   const getterInfo = async () => {
-    const res = await httpClient.get("product");
+    const res = await httpClient.get("products");
     setRes(res.data);
   };
 
@@ -28,67 +65,17 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to
-          <a href="https://nextjs.org">
-            {res.map((resItem) => (
-              <div key={resItem.name}>
-                <div>{resItem.name}</div>
-                <div>{resItem.description}</div>
-                <div>{resItem.price}</div>
-              </div>
-            ))}
-          </a>
-        </h1>
+        <h1 className={styles.title}>SELL EVERYWHERE</h1>
 
-        <p className={styles.description}>
-          Get started by editing{" "}
-          <code className={styles.code}>pages/index.tsx</code>
-        </p>
+        <p className={styles.description}>MALIUKH & KUCHERENKO & MELNYCHUK</p>
+        <code className={styles.code}>shop of your dream</code>
 
         <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+          {res.map((resItem) => (
+            <ProductCard key={resItem?.id} item={resItem} />
+          ))}
         </div>
       </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{" "}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
     </div>
   );
 };

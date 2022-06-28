@@ -1,14 +1,14 @@
 import { Modal } from "../../ui";
 import { createContext, memo, useContext, useState } from "react";
 
+const noop = () => {};
+
 const initialState = {
   showModal: noop,
   closeModal: noop,
   modalOpen: false,
   modalContent: null
 };
-
-const noop = () => {};
 
 const ModalContext = createContext(initialState);
 

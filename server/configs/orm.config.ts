@@ -18,6 +18,6 @@ export const ormConfig: TypeOrmModuleOptions = {
   database: process.env.POSTGRES_DATABASE,
   entities: ['dist/**/*.entity{.ts,.js}'],
   synchronize: false,
-  autoLoadEntities: false,
+  autoLoadEntities: true,
   ...(process.env.POSTGRES_SSL_CHECK === 'true' && sslCheck),
 };

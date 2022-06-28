@@ -19,5 +19,5 @@ export const ormConfig: TypeOrmModuleOptions = {
   entities: ['dist/**/*.entity{.ts,.js}'],
   synchronize: false,
   autoLoadEntities: false,
-  ...(!Boolean(process.env.POSTGRES_SSL_CHECK) && sslCheck),
+  ...(process.env.POSTGRES_SSL_CHECK === 'true' && sslCheck),
 };

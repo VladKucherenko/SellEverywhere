@@ -1,0 +1,69 @@
+@mixin btn-color($bg-color: $yellow) {
+  background-color: $bg-color;
+
+  @media (hover) {
+    &:hover {
+      background-color: darken($bg-color, 5);
+    }
+  }
+}
+
+@mixin simple-btn($bg-color: $yellow) {
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 100%;
+
+  border-radius: 0.4em;
+
+  border: none;
+  outline: none;
+  transition: all 0.3s;
+
+  @include btn-color($bg-color);
+
+  cursor: pointer;
+}
+
+@mixin bg-image-before($image-path, $width, $height) {
+  &::before {
+    content: "";
+    display: inline-block;
+    width: $width;
+    height: $height;
+    background-image: url($image-path);
+  }
+}
+
+@mixin flex-gap($size, $dir) {
+  & > :not(:last-child) {
+    @if $dir == "column" {
+      margin-bottom: $size;
+    }
+
+    @if $dir == "row" {
+      margin-right: $size;
+    }
+  }
+}
+
+@mixin bg-image-after($image-path, $width, $height) {
+  &::after {
+    content: "";
+    display: inline-block;
+    width: $width;
+    height: $height;
+    background-image: url($image-path);
+  }
+}
+
+@mixin truncate($line) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $line;
+
+  overflow: hidden;
+}

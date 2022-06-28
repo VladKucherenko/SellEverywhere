@@ -1,0 +1,60 @@
+.text {
+  &.font-sm {
+    font-size: 0.6875rem;
+  }
+
+  &.font-md {
+    font-size: 1rem;
+  }
+
+  &.font-lg {
+    font-size: 1.25rem;
+  }
+
+  &.font-12 {
+    font-size: 0.75rem;
+  }
+  &.font-14 {
+    font-size: 0.875rem;
+  }
+  &.font-18 {
+    font-size: 1.125rem;
+  }
+
+  color: $black;
+
+  &.blue {
+    color: $blue;
+  }
+  &.white {
+    color: $white;
+  }
+  &.black {
+    color: $black;
+  }
+
+  &.grey,
+  &.gray {
+    color: $gray;
+  }
+
+  &.grey-50,
+  &.gray-50 {
+    color: $gray-50;
+  }
+
+  &.grey-75,
+  &.gray-75 {
+    color: $gray-75;
+  }
+
+  &.regular {
+    font-weight: 400;
+  }
+  &.semiBold {
+    font-weight: 600;
+  }
+  &.bold {
+    font-weight: 700;
+  }
+}

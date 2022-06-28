@@ -1,0 +1,46 @@
+.heading {
+  &.h4 {
+    font-size: 0.875rem;
+  }
+  &.h3 {
+    font-size: 1rem;
+  }
+  &.h2 {
+    font-size: 1.125rem;
+  }
+  &.h1 {
+    line-height: 1.6875rem;
+    font-size: 1.25rem;
+  }
+
+  &.black {
+    color: $black;
+  }
+  &.white {
+    color: $white;
+  }
+  &.grey,
+  &.gray {
+    color: $gray;
+  }
+
+  &.grey-50,
+  &.gray-50 {
+    color: $gray-50;
+  }
+
+  &.grey-75,
+  &.gray-75 {
+    color: $gray-75;
+  }
+
+  &.regular {
+    font-weight: 400;
+  }
+  &.semiBold {
+    font-weight: 600;
+  }
+  &.bold {
+    font-weight: 700;
+  }
+}

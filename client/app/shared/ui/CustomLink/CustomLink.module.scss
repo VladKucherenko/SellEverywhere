@@ -1,0 +1,27 @@
+.link {
+  text-decoration: none;
+
+  &.underline {
+    text-decoration: underline;
+  }
+
+  color: $black;
+
+  &.grey-50,
+  &.gray-50 {
+    color: $gray-50;
+  }
+
+  &.grey-100,
+  &.gray-100 {
+    color: $gray-100;
+  }
+
+  &.black {
+    color: $black;
+  }
+
+  &.currentLink {
+    color: $black;
+  }
+}

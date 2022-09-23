@@ -1,0 +1,57 @@
+.btn__wrapper {
+  max-width: 100%;
+  width: 100%;
+  min-width: 12.5rem;
+  max-width: 12.5rem;
+
+  height: 2.375rem;
+
+  &.icon {
+    min-width: 2.375rem;
+    max-width: 2.375rem;
+    .btn {
+      border-radius: 50%;
+    }
+  }
+}
+
+.btn {
+  @include simple-btn();
+
+  color: $black;
+
+  &__rounded {
+    border-radius: $border-radius-default;
+  }
+
+  &.white {
+    @include btn-color($white);
+
+    box-shadow: $shadow-sm;
+
+    &:disabled {
+      @include btn-color($white-75);
+      &:hover {
+        cursor: not-allowed;
+        background: $white-75;
+      }
+    }
+  }
+
+  &.red {
+    @include btn-color($red);
+  }
+
+  &.black {
+    @include btn-color($black);
+  }
+
+  &.blue {
+    @include btn-color($blue);
+  }
+
+  &.gray,
+  &.grey {
+    @include btn-color($white-50);
+  }
+}
